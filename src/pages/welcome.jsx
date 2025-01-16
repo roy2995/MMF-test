@@ -10,18 +10,17 @@ const Welcome = () => {
   const [image, setImage] = useState(null);
 
   useEffect(() => {
-    // Recuperar datos del usuario desde localStorage
+
     const data = JSON.parse(localStorage.getItem("userData"));
     setUserData(data);
 
-    // Recuperar la URL de la imagen desde localStorage
     const imageUrl = localStorage.getItem("userImage");
     setImage(imageUrl);
   }, []);
 
   const handleRestart = () => {
-    localStorage.clear(); // Limpiar caché
-    navigate("/"); // Redirigir al inicio
+    localStorage.clear();
+    navigate("/"); 
   };
 
   return (
@@ -34,7 +33,6 @@ const Welcome = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Mostrar avatar con imagen de Cloudinary */}
           <div className="flex justify-center">
             {image ? (
               <Avatar className="h-24 w-24">
@@ -48,7 +46,7 @@ const Welcome = () => {
             )}
           </div>
 
-          {/* Mostrar datos ingresados */}
+
           <div className="space-y-2 text-center">
             <p><strong>Username:</strong> {userData?.stringInput || "N/A"}</p>
             <p><strong>Sex:</strong> {userData?.sex || "N/A"}</p>

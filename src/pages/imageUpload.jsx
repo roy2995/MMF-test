@@ -3,14 +3,14 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion"; // Para la animación
+import { motion } from "framer-motion"; 
 
 const Page2 = () => {
   const navigate = useNavigate();
   const [uploading, setUploading] = useState(false);
-  const [uploadMessage, setUploadMessage] = useState(""); // Estado para el mensaje de carga
-  const [imageUploaded, setImageUploaded] = useState(false); // Estado para verificar si la imagen fue cargada
-
+  const [uploadMessage, setUploadMessage] = useState("");
+  const [imageUploaded, setImageUploaded] = useState(false); 
+  
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) {
@@ -25,7 +25,7 @@ const Page2 = () => {
     }
 
     setUploading(true);
-    setUploadMessage("Uploading image..."); // Mensaje de inicio de carga
+    setUploadMessage("Uploading image..."); 
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "ml_default");
@@ -37,9 +37,9 @@ const Page2 = () => {
       });
       const data = await response.json();
       if (data.secure_url) {
-        localStorage.setItem("userImage", data.secure_url); // Guardar URL de imagen
-        setUploadMessage("Image uploaded successfully!"); // Mensaje de éxito
-        setImageUploaded(true); // Cambiar el estado de imagen cargada
+        localStorage.setItem("userImage", data.secure_url); 
+        setUploadMessage("Image uploaded successfully!"); 
+        setImageUploaded(true); 
       } else {
         setUploadMessage("Failed to upload image.");
         setImageUploaded(false);
@@ -56,7 +56,7 @@ const Page2 = () => {
   const handleNext = () => {
     if (!imageUploaded) {
       setUploadMessage("You must upload an image before proceeding.");
-      return; // No permite continuar si la imagen no fue cargada
+      return;
     }
     navigate("/welcome");
   };
@@ -87,7 +87,7 @@ const Page2 = () => {
               <Button
                 onClick={handleNext}
                 className="w-full sm:w-auto"
-                disabled={uploading || !imageUploaded} // Deshabilitar si no se ha cargado una imagen
+                disabled={uploading || !imageUploaded} 
               >
                 {uploading ? "Uploading..." : "Next"}
               </Button>
