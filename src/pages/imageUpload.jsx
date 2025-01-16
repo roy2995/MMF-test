@@ -9,12 +9,18 @@ const Page2 = () => {
   const navigate = useNavigate();
   const [uploading, setUploading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState(""); // Estado para el mensaje de carga
+  const [imageUploaded, setImageUploaded] = useState(false); // Estado para verificar si la imagen fue cargada
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
-    if (!file) return;
+    if (!file) {
+      setUploadMessage("Please upload a valid image file.");
+      setImageUploaded(false);
+      return;
+    }
     if (!file.type.startsWith("image/")) {
       setUploadMessage("Please upload a valid image file.");
+      setImageUploaded(false);
       return;
     }
 
@@ -33,18 +39,25 @@ const Page2 = () => {
       if (data.secure_url) {
         localStorage.setItem("userImage", data.secure_url); // Guardar URL de imagen
         setUploadMessage("Image uploaded successfully!"); // Mensaje de éxito
+        setImageUploaded(true); // Cambiar el estado de imagen cargada
       } else {
         setUploadMessage("Failed to upload image.");
+        setImageUploaded(false);
       }
     } catch (error) {
       console.error(error);
       setUploadMessage("An error occurred while uploading the image.");
+      setImageUploaded(false);
     } finally {
       setUploading(false);
     }
   };
 
   const handleNext = () => {
+    if (!imageUploaded) {
+      setUploadMessage("You must upload an image before proceeding.");
+      return; // No permite continuar si la imagen no fue cargada
+    }
     navigate("/welcome");
   };
 
@@ -71,7 +84,11 @@ const Page2 = () => {
                   </p>
                 </div>
               )}
-              <Button onClick={handleNext} className="w-full sm:w-auto" disabled={uploading}>
+              <Button
+                onClick={handleNext}
+                className="w-full sm:w-auto"
+                disabled={uploading || !imageUploaded} // Deshabilitar si no se ha cargado una imagen
+              >
                 {uploading ? "Uploading..." : "Next"}
               </Button>
             </div>
